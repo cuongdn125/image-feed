@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
 
@@ -18,11 +18,10 @@ function AuthorRow(props) {
         <View style={styles.container}>
             <Avatar size={35} initials={getInitials(fullname)} backgroundColor={getAvatarColor(fullname)}/>
             <Text style={styles.text} numberOfLines={1}>{fullname}</Text>
-            {!!linkText && (
-                <TouchableOpacity onPress={onPressLinkText}>
-                    <Text numberOfLines={1}>{linkText}</Text>
-                </TouchableOpacity>
-            )}
+            
+            <TouchableOpacity onPress={onPressLinkText}>
+                <Text numberOfLines={1}>{linkText}</Text>
+            </TouchableOpacity>
         </View>
     );
 }

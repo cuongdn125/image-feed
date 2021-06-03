@@ -8,22 +8,32 @@ import {getImageFromId} from '../util/api'
 CardList.propTypes = {
     items: PropTypes.arrayOf(
         PropTypes.shape({
-            id: PropTypes.number.isRequired,
-            author: PropTypes.string.isRequired,
-        })
-    ).isRequired,
+          id: PropTypes.number.isRequired,
+          author: PropTypes.string.isRequired,
+        }),
+      ).isRequired,
+      commentsForItem: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string))
+        .isRequired,
+      onPressComments: PropTypes.func.isRequired,
 };
 
 function CardList(props) {
 
-    const {items} = props;
+    const {items, commentsForItem, onPressComments} = props;
 
-    const renderItem = ({item: {id, author}}) => (
-        <Card 
-            fullname={author}
-            image={{uri: getImageFromId(id)}}
-        />
-    ) 
+    const renderItem = ({item: {id, author}}) => {
+        const comments = commentsForItem[id];
+
+
+        return(
+            <Card 
+                fullname={author}
+                image={{uri: getImageFromId(id)}}
+                linkText={`${comments ? comments.length : 0} Comments`}
+                onPressLinkText={() => {onPressComments(id)}}
+            />
+        )
+    }
     
 
     const keyExtractor = ({id}) => id.toString();
@@ -33,6 +43,7 @@ function CardList(props) {
             data={items}
             renderItem={renderItem}
             keyExtractor={keyExtractor}
+            extraData={commentsForItem}
         />
     );
 }

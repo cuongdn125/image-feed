@@ -7,9 +7,12 @@ import {fetchImages} from '../util/api';
 import CardList from '../components/CardList';
 
 
-Feed.propTypes = {
-    style: ViewPropTypes.style, 
+Feed.propTypes = { 
+    style: ViewPropTypes.style,
+    commentsForItem: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
+    onPressComments: PropTypes.func.isRequired,
 };
+
 Feed.defaultProps = {
     style: null,
 }
@@ -20,7 +23,7 @@ function Feed(props) {
     const [error, setError] = useState(false);
     const [items, setItems] = useState([]);
 
-    const {style} = props;
+    const {style, commentsForItem, onPressComments} = props;
 
     useEffect(() => {
         fetchData();
@@ -45,7 +48,7 @@ function Feed(props) {
     }
     return (
         <SafeAreaView style={style}>
-            <CardList items={items}/>
+            <CardList items={items} commentsForItem={commentsForItem} onPressComments={onPressComments}/>
         </SafeAreaView>
     )
 }
